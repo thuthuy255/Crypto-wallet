@@ -1,63 +1,77 @@
 import React, { useState, useEffect } from "react";
 import { getTransactionHistory } from "../api/walletApi";
+import "../css/TransactionHistory.css"; // import CSS thuần
 
 export default function TransactionHistory() {
-    const [transactions, setTransactions] = useState([]);
+  const [transactions, setTransactions] = useState([]);
 
-    const fetchHistory = async () => {
-        try {
-            const data = await getTransactionHistory();
-            setTransactions(data);
-        } catch (err) {
-            console.error("Failed to fetch transaction history:", err);
-        }
-    };
+  // Lấy dữ liệu giao dịch từ API
+  const fetchHistory = async () => {
+    try {
+      const data = await getTransactionHistory();
+      setTransactions(data);
+    } catch (err) {
+      console.error("❌ Không thể lấy lịch sử giao dịch:", err);
+    }
+  };
 
-    useEffect(() => {
-        fetchHistory();
-        const interval = setInterval(fetchHistory, 5000); // cập nhật 5s/lần
-        return () => clearInterval(interval);
-    }, []);
+  useEffect(() => {
+    fetchHistory();
+    const interval = setInterval(fetchHistory, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
-    return (
-        <div style={{ marginBottom: "20px" }}>
-            <h2>Transaction History</h2>
-            <table
-                border="1"
-                cellPadding="5"
-                style={{ borderCollapse: "collapse", width: "100%" }}
-            >
-                <thead>
-                    <tr>
-                        <th>From</th>
-                        <th>To</th>
-                        <th>Amount (ETH)</th>
-                        <th>Status</th>
-                        <th>Tx Hash</th>
-                        <th>Time</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {transactions.map((tx) => (
-                        <tr key={tx._id}>
-                            <td>{tx.from}</td>
-                            <td>{tx.to}</td>
-                            <td>{tx.amount}</td>
-                            <td>{tx.status}</td>
-                            <td>
-                                <a
-                                    href={`https://goerli.etherscan.io/tx/${tx.txHash}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    {tx.txHash.slice(0, 10)}...
-                                </a>
-                            </td>
-                            <td>{new Date(tx.createdAt).toLocaleString()}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+  return (
+    <div className="tx-container">
+      <h2 className="tx-title">📜 Lịch sử giao dịch</h2>
+
+      {transactions.length === 0 ? (
+        <p className="tx-empty">Chưa có giao dịch nào...</p>
+      ) : (
+        <div className="tx-table-wrapper">
+          <table className="tx-table">
+            <thead>
+              <tr>
+                <th>Người gửi</th>
+                <th>Người nhận</th>
+                <th>Số lượng (ETH)</th>
+                <th>Trạng thái</th>
+                <th>Tx Hash</th>
+                <th>Thời gian</th>
+              </tr>
+            </thead>
+            <tbody>
+              {transactions.map((tx) => (
+                <tr key={tx._id} className="tx-row">
+                  <td>{tx.from}</td>
+                  <td>{tx.to}</td>
+                  <td className="tx-amount">{tx.amount}</td>
+                  <td>
+                    <span
+                      className={`tx-status ${
+                        tx.status === "confirmed" ? "success" : "failed"
+                      }`}
+                    >
+                      {tx.status}
+                    </span>
+                  </td>
+                  <td>
+                    <a
+                      href={`https://goerli.etherscan.io/tx/${tx.txHash}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="tx-hash"
+                    >
+                      {tx.txHash.slice(0, 12)}...
+                    </a>
+                  </td>
+                  <td>{new Date(tx.createdAt).toLocaleString("vi-VN")}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-    );
+      )}
+    </div>
+  );
 }

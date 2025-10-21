@@ -1,0 +1,86 @@
+.tx-container {
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  transition: all 0.3s ease;
+  width: 1600px;
+}
+
+.tx-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 20px;
+}
+
+.tx-empty {
+  text-align: center;
+  color: #64748b;
+  font-style: italic;
+}
+
+.tx-table-wrapper {
+  overflow-x: auto;
+}
+
+.tx-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.tx-table th {
+  background: #f8fafc;
+  color: #334155;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 10px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.tx-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #475569;
+}
+
+.tx-row:hover {
+  background: #f1f5f9;
+  transition: background 0.2s ease;
+}
+
+.tx-amount {
+  font-weight: bold;
+  color: #0369a1;
+  text-align: center;
+}
+
+.tx-status {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.tx-status.success {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.tx-status.failed {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.tx-hash {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.tx-hash:hover {
+  text-decoration: underline;
+}
